@@ -14,6 +14,8 @@
  */
 namespace MouseSimulator {
 
+// ============ 获取鼠标窗口内位置 ============
+
 /**
  * @brief 获取鼠标在窗口内的相对位置
  * @param windowHandle 目标窗口句柄
@@ -31,7 +33,7 @@ Result<Point> GetPositionInWindow(HWND windowHandle);
  * @param button 鼠标按键
  * @return 操作结果
  */
-Result<bool> ButtonDownInWindow(HWND windowHandle, int x, int y, MouseButton button);
+Result<bool> MouseButtonDownInWindow(HWND windowHandle, int x, int y, MouseButton button);
 
 /**
  * @brief 在窗口客户区内释放鼠标按键
@@ -41,7 +43,7 @@ Result<bool> ButtonDownInWindow(HWND windowHandle, int x, int y, MouseButton but
  * @param button 鼠标按键
  * @return 操作结果
  */
-Result<bool> ButtonUpInWindow(HWND windowHandle, int x, int y, MouseButton button);
+Result<bool> MouseButtonUpInWindow(HWND windowHandle, int x, int y, MouseButton button);
 
 // ============ 窗口内移动操作 ============
 

@@ -35,8 +35,8 @@ namespace {
         return MAKELPARAM(x, y);
     }
     
-    // 获取按键状态WPARAM
-    WPARAM GetKeyState(MouseButton button) {
+    // 构建鼠标消息的WPARAM参数（包含修饰键和鼠标按钮状态）
+    WPARAM BuildMouseWParam(MouseButton button) {
         WPARAM wParam = 0;
         if (GetAsyncKeyState(VK_CONTROL) & 0x8000) wParam |= MK_CONTROL;
         if (GetAsyncKeyState(VK_SHIFT) & 0x8000) wParam |= MK_SHIFT;
@@ -54,7 +54,7 @@ namespace {
     
     // 获取X按钮的附加信息
     WPARAM GetXButtonWParam(MouseButton button) {
-        WPARAM wParam = GetKeyState(button);
+        WPARAM wParam = BuildMouseWParam(button);
         if (button == MouseButton::X1) {
             wParam |= MAKEWPARAM(0, XBUTTON1);
         } else if (button == MouseButton::X2) {
@@ -64,7 +64,7 @@ namespace {
     }
 }
 
-// ============ 窗口内移动操作 ============
+// ============ 获取鼠标窗口内位置 ============
 
 Result<Point> GetPositionInWindow(HWND windowHandle) {
     if (!IsWindow(windowHandle)) {
@@ -86,7 +86,7 @@ Result<Point> GetPositionInWindow(HWND windowHandle) {
 
 // ============ 窗口内点击操作 ============
 
-Result<bool> ButtonDownInWindow(HWND windowHandle, int x, int y, MouseButton button) {
+Result<bool> MouseButtonDownInWindow(HWND windowHandle, int x, int y, MouseButton button) {
     if (!IsWindow(windowHandle)) {
         return Result<bool>::Error(ErrorCode::INVALID_HANDLE, L"Invalid window handle");
     }
@@ -97,7 +97,7 @@ Result<bool> ButtonDownInWindow(HWND windowHandle, int x, int y, MouseButton but
     if (button == MouseButton::X1 || button == MouseButton::X2) {
         wParam = GetXButtonWParam(button);
     } else {
-        wParam = GetKeyState(button);
+        wParam = BuildMouseWParam(button);
     }
     
     LPARAM lParam = MakeLParam(x, y);
@@ -107,7 +107,7 @@ Result<bool> ButtonDownInWindow(HWND windowHandle, int x, int y, MouseButton but
     return Result<bool>::Success(true);
 }
 
-Result<bool> ButtonUpInWindow(HWND windowHandle, int x, int y, MouseButton button) {
+Result<bool> MouseButtonUpInWindow(HWND windowHandle, int x, int y, MouseButton button) {
     if (!IsWindow(windowHandle)) {
         return Result<bool>::Error(ErrorCode::INVALID_HANDLE, L"Invalid window handle");
     }
@@ -118,7 +118,7 @@ Result<bool> ButtonUpInWindow(HWND windowHandle, int x, int y, MouseButton butto
     if (button == MouseButton::X1 || button == MouseButton::X2) {
         wParam = GetXButtonWParam(button);
     } else {
-        wParam = GetKeyState(button);
+        wParam = BuildMouseWParam(button);
     }
     
     LPARAM lParam = MakeLParam(x, y);
@@ -136,7 +136,7 @@ Result<bool> MoveInWindow(HWND windowHandle, int endX, int endY, MouseButton but
     }
     
     // 发送鼠标移动消息
-    WPARAM wParam = GetKeyState(button);
+    WPARAM wParam = BuildMouseWParam(button);
     LPARAM lParam = MakeLParam(endX, endY);
     
     SendMessage(windowHandle, WM_MOUSEMOVE, wParam, lParam);

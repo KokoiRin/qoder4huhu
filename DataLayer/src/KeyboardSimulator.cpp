@@ -89,23 +89,6 @@ Result<bool> SendChar(HWND windowHandle, wchar_t character) {
     
     return Result<bool>::Success(true);
 }
-
-Result<bool> SendText(HWND windowHandle, const std::wstring& text) {
-    if (!IsWindow(windowHandle)) {
-        return Result<bool>::Error(ErrorCode::INVALID_HANDLE, L"Invalid window handle");
-    }
-    
-    for (wchar_t ch : text) {
-        auto result = SendChar(windowHandle, ch);
-        if (!result.IsSuccess()) {
-            return result;
-        }
-        Sleep(10); // 字符间延迟
-    }
-    
-    return Result<bool>::Success(true);
-}
-
 // ============ 键盘状态 ============
 
 Result<bool> IsKeyPressed(UINT virtualKey) {

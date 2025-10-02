@@ -37,7 +37,47 @@ namespace {
         return Result<ImageData>::Success(imageData);
     }
     
-    // 使用BitBlt捕获指定区域
+    // 使用PrintWindow捕获窗口
+    Result<ImageData> CaptureUsingPrintWindow(HWND windowHandle, int width, int height, DWORD flags = 0) {
+        HDC windowDC = GetDC(NULL);
+        if (!windowDC) {
+            return Result<ImageData>::Error(ErrorCode::CAPTURE_FAILED, L"Failed to get screen DC");
+        }
+        
+        HDC memDC = CreateCompatibleDC(windowDC);
+        if (!memDC) {
+            ReleaseDC(NULL, windowDC);
+            return Result<ImageData>::Error(ErrorCode::CAPTURE_FAILED, L"Failed to create memory DC");
+        }
+        
+        HBITMAP hBitmap = CreateCompatibleBitmap(windowDC, width, height);
+        if (!hBitmap) {
+            DeleteDC(memDC);
+            ReleaseDC(NULL, windowDC);
+            return Result<ImageData>::Error(ErrorCode::CAPTURE_FAILED, L"Failed to create bitmap");
+        }
+        
+        HGDIOBJ oldBitmap = SelectObject(memDC, hBitmap);
+        
+        if (!PrintWindow(windowHandle, memDC, flags)) {
+            SelectObject(memDC, oldBitmap);
+            DeleteObject(hBitmap);
+            DeleteDC(memDC);
+            ReleaseDC(NULL, windowDC);
+            return Result<ImageData>::Error(ErrorCode::CAPTURE_FAILED, L"Failed to print window");
+        }
+        
+        auto result = ExtractImageDataFromBitmap(hBitmap, memDC, width, height);
+        
+        SelectObject(memDC, oldBitmap);
+        DeleteObject(hBitmap);
+        DeleteDC(memDC);
+        ReleaseDC(NULL, windowDC);
+        
+        return result;
+    }
+    
+    // 使用BitBlt捕获屏幕区域（仅用于屏幕捕获）
     Result<ImageData> CaptureUsingBitBlt(HDC sourceDC, int x, int y, int width, int height) {
         HDC memDC = CreateCompatibleDC(sourceDC);
         if (!memDC) {
@@ -106,16 +146,8 @@ Result<ImageData> CaptureWindow(HWND windowHandle) {
         return Result<ImageData>::Error(ErrorCode::INVALID_PARAMETER, L"Invalid window dimensions");
     }
     
-    HDC windowDC = GetWindowDC(windowHandle);
-    if (!windowDC) {
-        return Result<ImageData>::Error(ErrorCode::CAPTURE_FAILED, L"Failed to get window DC");
-    }
-    
-    auto result = CaptureUsingBitBlt(windowDC, 0, 0, width, height);
-    
-    ReleaseDC(windowHandle, windowDC);
-    
-    return result;
+    // 使用PrintWindow捕获窗口
+    return CaptureUsingPrintWindow(windowHandle, width, height);
 }
 
 Result<ImageData> CaptureWindowClient(HWND windowHandle) {
@@ -135,16 +167,8 @@ Result<ImageData> CaptureWindowClient(HWND windowHandle) {
         return Result<ImageData>::Error(ErrorCode::INVALID_PARAMETER, L"Invalid client dimensions");
     }
     
-    HDC clientDC = GetDC(windowHandle);
-    if (!clientDC) {
-        return Result<ImageData>::Error(ErrorCode::CAPTURE_FAILED, L"Failed to get client DC");
-    }
-    
-    auto result = CaptureUsingBitBlt(clientDC, 0, 0, width, height);
-    
-    ReleaseDC(windowHandle, clientDC);
-    
-    return result;
+    // 使用PrintWindow捕获窗口客户区
+    return CaptureUsingPrintWindow(windowHandle, width, height, PW_CLIENTONLY);
 }
 
 Result<ImageData> CaptureRegion(HWND windowHandle, int x, int y, int width, int height) {
@@ -156,16 +180,49 @@ Result<ImageData> CaptureRegion(HWND windowHandle, int x, int y, int width, int 
         return Result<ImageData>::Error(ErrorCode::INVALID_PARAMETER, L"Invalid region dimensions");
     }
     
-    HDC windowDC = GetDC(windowHandle);
-    if (!windowDC) {
-        return Result<ImageData>::Error(ErrorCode::CAPTURE_FAILED, L"Failed to get window DC");
+    // 获取窗口尺寸
+    RECT windowRect;
+    if (!GetWindowRect(windowHandle, &windowRect)) {
+        return Result<ImageData>::Error(ErrorCode::OPERATION_FAILED, L"Failed to get window rect");
     }
     
-    auto result = CaptureUsingBitBlt(windowDC, x, y, width, height);
+    int windowWidth = windowRect.right - windowRect.left;
+    int windowHeight = windowRect.bottom - windowRect.top;
     
-    ReleaseDC(windowHandle, windowDC);
+    // 检查区域是否超出窗口范围
+    if (x + width > windowWidth || y + height > windowHeight) {
+        return Result<ImageData>::Error(ErrorCode::INVALID_PARAMETER, L"Region extends beyond window bounds");
+    }
     
-    return result;
+    // 先捕获整个窗口
+    auto fullWindowResult = CaptureUsingPrintWindow(windowHandle, windowWidth, windowHeight);
+    if (!fullWindowResult.IsSuccess()) {
+        return fullWindowResult;
+    }
+    
+    auto fullImage = fullWindowResult.GetData();
+    
+    // 裁剪出指定区域
+    ImageData regionImage;
+    regionImage.width = width;
+    regionImage.height = height;
+    regionImage.bitsPerPixel = fullImage.bitsPerPixel;
+    regionImage.stride = width * 4; // 32位每像素
+    
+    int regionDataSize = regionImage.stride * height;
+    regionImage.data.resize(regionDataSize);
+    
+    // 复制指定区域的数据
+    for (int row = 0; row < height; row++) {
+        int srcRowOffset = (y + row) * fullImage.stride + x * 4;
+        int dstRowOffset = row * regionImage.stride;
+        
+        if (srcRowOffset + width * 4 <= (int)fullImage.data.size()) {
+            memcpy(&regionImage.data[dstRowOffset], &fullImage.data[srcRowOffset], width * 4);
+        }
+    }
+    
+    return Result<ImageData>::Success(regionImage);
 }
 
 }  // namespace ScreenCapture

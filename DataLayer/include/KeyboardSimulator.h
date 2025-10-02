@@ -42,14 +42,6 @@ Result<bool> KeyUp(HWND windowHandle, UINT virtualKey);
  */
 Result<bool> SendChar(HWND windowHandle, wchar_t character);
 
-/**
- * @brief 输入文本字符串
- * @param windowHandle 目标窗口句柄
- * @param text 要输入的文本
- * @return 操作结果
- */
-Result<bool> SendText(HWND windowHandle, const std::wstring& text);
-
 // ============ 键盘状态 ============
 
 /**
