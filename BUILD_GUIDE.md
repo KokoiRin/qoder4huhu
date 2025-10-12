@@ -9,11 +9,8 @@
 # 构建项目
 ./build.sh
 
-# 运行测试
-./run_tests.sh
-
-# 清理构建文件
-./clean.sh
+# 运行主程序（Qt GUI）
+./build/bin/WindowsAPIApp.exe
 ```
 
 ### 手动步骤
@@ -42,6 +39,7 @@ cd ..
 
 - **MinGW**: 确保 MinGW 已添加到 PATH 环境变量
 - **CMake**: 版本 3.16 或更高
+- **Qt5**: Qt5 开发库 (推荐 5.15.2 或更高)
 - **编译器**: GCC 支持 C++17
 
 ### 常见 MinGW 路径
@@ -49,10 +47,14 @@ cd ..
 - `C:\msys64\mingw64\bin`
 - `D:\Qt\Tools\mingw1310_64\bin` (Qt 自带)
 
+### 常见 Qt5 路径
+- `C:\Qt\5.15.2\mingw81_64\bin`
+- `D:\Qt\5.15.2\mingw81_64\bin`
+
 ## 构建输出
 
 成功构建后，可执行文件将位于：
-- 主程序: `build/bin/WindowsAPIApp.exe`
+- **主程序**: `build/bin/WindowsAPIApp.exe`
 - 测试程序: `build/bin/SmokeTest.exe`
 
 ## 故障排除
@@ -71,13 +73,11 @@ cd ..
 
 ## 推荐工作流
 
-1. **开发时**: 使用 `./build.sh` 快速构建
-2. **测试时**: 使用 `./run_tests.sh` 运行所有测试
-3. **清理时**: 使用 `./clean.sh` 清理构建文件
-4. **发布时**: 使用 Release 模式构建最终版本
+1. **构建**: 使用 `./build.sh` 构建项目
+2. **运行**: 直接运行 `./build/bin/WindowsAPIApp.exe`
+3. **清理**: 使用 `./clean.sh` 清理构建文件
 
 ## 脚本说明
 
-- **build.sh**: 单纯构建项目，不运行测试
-- **run_tests.sh**: 构建项目并运行所有测试
+- **build.sh**: 构建整个项目，生成所有可执行文件
 - **clean.sh**: 清理所有构建产物和缓存

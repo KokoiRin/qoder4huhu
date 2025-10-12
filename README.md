@@ -114,11 +114,8 @@ qoder4huhu/
 # 构建项目
 ./build.sh
 
-# 运行测试
-./run_tests.sh
-
-# 清理构建文件
-./clean.sh
+# 运行主程序
+./build/bin/WindowsAPIApp.exe
 ```
 
 ### 手动构建

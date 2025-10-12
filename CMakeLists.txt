@@ -42,22 +42,7 @@ add_subdirectory(Common)
 add_subdirectory(DataLayer)
 # add_subdirectory(ServiceLayer)
 # add_subdirectory(PresentationLayer)
-# add_subdirectory(UILayer)
+add_subdirectory(UILayer)
 
 # 添加测试目录
 add_subdirectory(test)
-
-# 主可执行文件
-add_executable(WindowsAPIApp main.cpp)
-
-# 链接库
-target_link_libraries(WindowsAPIApp
-#    UILayer
-#    PresentationLayer
-#    ServiceLayer
-    DataLayer
-    Common
-    user32
-    gdi32
-    kernel32
-)
