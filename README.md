@@ -100,29 +100,56 @@ qoder4huhu/
 - 详细的操作日志
 - 错误追踪和统计信息
 
-- **编译器**: Visual Studio 2019+ 或 GCC 8.0+
+- **编译器**: MinGW-w64 GCC 8.0+ (推荐) 或 Visual Studio 2019+
 - **C++标准**: C++17
 - **系统要求**: Windows 10+
 - **依赖库**: Windows SDK、GDI+
 
 ## 构建说明
 
+### 快速开始
+
+**使用 Shell 脚本**:
+```bash
+# 构建项目
+./build.sh
+
+# 运行测试
+./run_tests.sh
+
+# 清理构建文件
+./clean.sh
+```
+
+### 手动构建
+
 1. 使用CMake生成项目文件：
 ```bash
 mkdir build
 cd build
-cmake ..
+cmake .. -G "MinGW Makefiles"
 ```
 
 2. 编译项目：
 ```bash
-cmake --build . --config Release
+cmake --build . --parallel
 ```
 
 3. 运行程序：
 ```bash
 ./bin/WindowsAPIApp.exe
+./bin/SmokeTest.exe
 ```
+
+### 环境要求
+
+- **编译器**: MinGW-w64 GCC 8.0+ (推荐) 或 Visual Studio 2019+
+- **构建工具**: CMake 3.16+
+- **C++标准**: C++17
+- **系统要求**: Windows 10+
+- **依赖库**: Windows SDK、Google Test (自动下载)
+
+详细构建说明请参考 [`BUILD_GUIDE.md`](BUILD_GUIDE.md)
 
 ## 使用示例
 

@@ -4,6 +4,15 @@ project(WindowsAPIProject)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# MinGW特定设置
+if(MINGW)
+    message(STATUS "Configuring for MinGW")
+    # 启用静态链接，避免运行时依赖问题
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static-libgcc -static-libstdc++")
+    # 设置Windows版本
+    add_definitions(-DWINVER=0x0601 -D_WIN32_WINNT=0x0601)
+endif()
+
 # 设置输出目录
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
