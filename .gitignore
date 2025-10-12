@@ -47,8 +47,7 @@ CTestTestfile.cmake
 Testing/
 
 # 测试结果文件
-test_results/*.xml
-!test_results/README.md
+test_results/
 
 # 包管理器
 vcpkg_installed/
