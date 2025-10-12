@@ -1,8 +1,6 @@
 #include "../include/WindowManager.h"
 #include <windows.h>
 
-using namespace WindowsAPI;
-
 namespace WindowManager {
 
 // ============ 窗口查找 ============
@@ -28,7 +26,7 @@ Result<HWND> FindWindowByProcessId(DWORD processId) {
         DWORD windowProcessId;
         GetWindowThreadProcessId(hwnd, &windowProcessId);
         
-        if (windowProcessId == data->targetProcessId && IsWindowVisible(hwnd)) {
+        if (windowProcessId == data->targetProcessId && ::IsWindowVisible(hwnd)) {
             data->resultHwnd = hwnd;
             return FALSE; // 停止枚举
         }
@@ -91,32 +89,32 @@ Result<std::wstring> GetWindowClassName(HWND windowHandle) {
     return Result<std::wstring>::Success(std::wstring(className, length));
 }
 
-Result<Rectangle> GetWindowRect(HWND windowHandle) {
+Result<WindowsAPI::Rectangle> GetWindowRect(HWND windowHandle) {
     if (!IsWindow(windowHandle)) {
-        return Result<Rectangle>::Error(ErrorCode::INVALID_HANDLE, L"Invalid window handle");
+        return Result<WindowsAPI::Rectangle>::Error(ErrorCode::INVALID_HANDLE, L"Invalid window handle");
     }
     
     RECT rect;
     if (!::GetWindowRect(windowHandle, &rect)) {
-        return Result<Rectangle>::Error(ErrorCode::OPERATION_FAILED, L"Failed to get window rect");
+        return Result<WindowsAPI::Rectangle>::Error(ErrorCode::OPERATION_FAILED, L"Failed to get window rect");
     }
     
-    Rectangle result(rect.left, rect.top, rect.right, rect.bottom);
-    return Result<Rectangle>::Success(result);
+    WindowsAPI::Rectangle result(rect.left, rect.top, rect.right, rect.bottom);
+    return Result<WindowsAPI::Rectangle>::Success(result);
 }
 
-Result<Rectangle> GetClientRect(HWND windowHandle) {
+Result<WindowsAPI::Rectangle> GetClientRect(HWND windowHandle) {
     if (!IsWindow(windowHandle)) {
-        return Result<Rectangle>::Error(ErrorCode::INVALID_HANDLE, L"Invalid window handle");
+        return Result<WindowsAPI::Rectangle>::Error(ErrorCode::INVALID_HANDLE, L"Invalid window handle");
     }
     
     RECT rect;
     if (!::GetClientRect(windowHandle, &rect)) {
-        return Result<Rectangle>::Error(ErrorCode::OPERATION_FAILED, L"Failed to get client rect");
+        return Result<WindowsAPI::Rectangle>::Error(ErrorCode::OPERATION_FAILED, L"Failed to get client rect");
     }
     
-    Rectangle result(rect.left, rect.top, rect.right, rect.bottom);
-    return Result<Rectangle>::Success(result);
+    WindowsAPI::Rectangle result(rect.left, rect.top, rect.right, rect.bottom);
+    return Result<WindowsAPI::Rectangle>::Success(result);
 }
 
 Result<DWORD> GetWindowProcessId(HWND windowHandle) {

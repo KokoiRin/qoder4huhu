@@ -2,17 +2,12 @@
 
 # 设置通用层源文件
 set(COMMON_SOURCES
-    src/Logger.cpp
-    src/ErrorHandler.cpp
-    src/Utilities.cpp
+    src/CommonTypes.cpp
 )
 
 # 设置通用层头文件
 set(COMMON_HEADERS
     include/CommonTypes.h
-    include/Logger.h
-    include/ErrorHandler.h
-    include/Utilities.h
 )
 
 # 创建通用层静态库

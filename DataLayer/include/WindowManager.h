@@ -1,7 +1,9 @@
 #pragma once
 
 #include "CommonTypes.h"
-#include <vector>
+
+using namespace WindowsAPI;
+
 
 /**
  * @namespace WindowManager
@@ -63,14 +65,14 @@ Result<std::wstring> GetWindowClassName(HWND windowHandle);
  * @param windowHandle 窗口句柄
  * @return 窗口矩形
  */
-Result<Rectangle> GetWindowRect(HWND windowHandle);
+Result<WindowsAPI::Rectangle> GetWindowRect(HWND windowHandle);
 
 /**
  * @brief 获取窗口客户区矩形
  * @param windowHandle 窗口句柄
  * @return 客户区矩形
  */
-Result<Rectangle> GetClientRect(HWND windowHandle);
+Result<WindowsAPI::Rectangle> GetClientRect(HWND windowHandle);
 
 /**
  * @brief 获取窗口进程ID

@@ -1,7 +1,6 @@
 #include "../include/KeyboardSimulator.h"
 #include <windows.h>
 
-using namespace WindowsAPI;
 
 namespace KeyboardSimulator {
 

@@ -1,8 +1,6 @@
 #include "../include/ScreenCapture.h"
 #include <windows.h>
 
-using namespace WindowsAPI;
-
 namespace ScreenCapture {
 
 // 内部辅助函数

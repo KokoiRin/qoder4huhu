@@ -2,6 +2,8 @@
 
 #include "CommonTypes.h"
 
+using namespace WindowsAPI;
+
 /**
  * @namespace ScreenCapture
  * @brief 屏幕捕获的基础功能

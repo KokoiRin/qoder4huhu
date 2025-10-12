@@ -1,23 +1,15 @@
 # PresentationLayer CMakeLists.txt
 
 # 设置表现层源文件
-set(PRESENTATIONLAYER_SOURCES
-    src/CommandProcessor.cpp
-    src/EventHandler.cpp
-    src/DataFormatter.cpp
-    src/ValidationEngine.cpp
+set(PRESENTATIONLAYER_SOURCES src/base.cpp
 )
 
 # 设置表现层头文件
 set(PRESENTATIONLAYER_HEADERS
-    include/CommandProcessor.h
-    include/EventHandler.h
-    include/DataFormatter.h
-    include/ValidationEngine.h
 )
 
 # 创建表现层静态库
-add_library(PresentationLayer STATIC ${PRESENTATIONLAYER_SOURCES} ${PRESENTATIONLAYER_HEADERS})
+#add_library(PresentationLayer STATIC ${PRESENTATIONLAYER_SOURCES} ${PRESENTATIONLAYER_HEADERS})
 
 # 设置头文件目录
 target_include_directories(PresentationLayer PUBLIC 

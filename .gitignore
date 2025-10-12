@@ -1,0 +1,89 @@
+# 编译输出目录
+build/
+cmake-build-*/
+bin/
+lib/
+obj/
+
+# IDE文件
+.vs/
+.vscode/
+.idea/
+*.vcxproj.user
+*.sln.docstates
+
+# 临时文件
+*.tmp
+*.temp
+*.log
+*.bak
+*.swp
+*.swo
+*~
+
+# 系统文件
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# 编译生成的文件
+*.exe
+*.dll
+*.lib
+*.a
+*.so
+*.dylib
+*.o
+*.obj
+*.pdb
+*.ilk
+*.exp
+
+# CMake缓存
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+CTestTestfile.cmake
+Testing/
+
+# 测试结果文件
+test_results/*.xml
+!test_results/README.md
+
+# 包管理器
+vcpkg_installed/
+_deps/
+
+# 配置文件（保留模板）
+*.local
+*.user
+
+# 日志文件
+*.log
+
+# 文档生成
+docs/_build/
+docs/html/
+docs/latex/
+
+# 第三方依赖
+third_party/
+dependencies/
+extern/
+
+# 数据文件
+*.db
+*.sqlite
+*.dat
+
+# 备份文件
+*.backup
+*.old
+
+# 调试信息
+*.dSYM/
+
+# 其他
+.qoder/
+.git/
+.gitignore.bak

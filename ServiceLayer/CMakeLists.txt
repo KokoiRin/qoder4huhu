@@ -1,19 +1,11 @@
 # ServiceLayer CMakeLists.txt
 
 # 设置服务层源文件
-set(SERVICELAYER_SOURCES
-    src/WindowService.cpp
-    src/InputService.cpp
-    src/CaptureService.cpp
-    src/AutomationService.cpp
+set(SERVICELAYER_SOURCES src/case.cpp
 )
 
 # 设置服务层头文件
 set(SERVICELAYER_HEADERS
-    include/WindowService.h
-    include/InputService.h
-    include/CaptureService.h
-    include/AutomationService.h
 )
 
 # 创建服务层静态库

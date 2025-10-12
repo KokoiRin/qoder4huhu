@@ -14,7 +14,7 @@ using namespace WindowsAPI;
 /**
  * @brief 主函数 - Windows API项目入口点
  */
-int wmain(int argc, wchar_t* argv[])
+int main(int argc, char* argv[])
 {
     // 设置控制台输出为UTF-8
     SetConsoleOutputCP(CP_UTF8);
@@ -53,8 +53,8 @@ int wmain(int argc, wchar_t* argv[])
             auto windowRect = WindowManager::GetWindowRect(activeWindow.GetData());
             if (windowRect.IsSuccess()) {
                 auto rect = windowRect.GetData();
-                std::wcout << L"✓ 窗口位置: (" << rect.x << L", " << rect.y 
-                          << L"), 大小: " << rect.width << L"x" << rect.height << std::endl;
+                std::wcout << L"✓ 窗口位置: (" << rect.left << L", " << rect.top 
+                          << L"), 大小: " << rect.width() << L"x" << rect.height() << std::endl;
             }
         }
         

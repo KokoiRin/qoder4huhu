@@ -2,6 +2,8 @@
 
 #include "CommonTypes.h"
 
+using namespace WindowsAPI;
+
 
 /**
  * @namespace KeyboardSimulator

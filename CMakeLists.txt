@@ -9,30 +9,43 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
+# Google Test 集成
+include(FetchContent)
+FetchContent_Declare(
+  googletest
+  URL https://github.com/google/googletest/archive/refs/tags/v1.15.2.zip
+)
+# For Windows: Prevent overriding the parent project's compiler/linker settings
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(googletest)
+
 # 添加头文件目录
 include_directories(
     ${CMAKE_SOURCE_DIR}/Common/include
     ${CMAKE_SOURCE_DIR}/DataLayer/include
-    ${CMAKE_SOURCE_DIR}/ServiceLayer/include
-    ${CMAKE_SOURCE_DIR}/PresentationLayer/include
-    ${CMAKE_SOURCE_DIR}/UILayer/include
+#    ${CMAKE_SOURCE_DIR}/ServiceLayer/include
+#    ${CMAKE_SOURCE_DIR}/PresentationLayer/include
+#    ${CMAKE_SOURCE_DIR}/UILayer/include
 )
 
 # 添加子目录
 add_subdirectory(Common)
 add_subdirectory(DataLayer)
-add_subdirectory(ServiceLayer)
-add_subdirectory(PresentationLayer)
-add_subdirectory(UILayer)
+# add_subdirectory(ServiceLayer)
+# add_subdirectory(PresentationLayer)
+# add_subdirectory(UILayer)
+
+# 添加测试目录
+add_subdirectory(test)
 
 # 主可执行文件
 add_executable(WindowsAPIApp main.cpp)
 
 # 链接库
 target_link_libraries(WindowsAPIApp
-    UILayer
-    PresentationLayer
-    ServiceLayer
+#    UILayer
+#    PresentationLayer
+#    ServiceLayer
     DataLayer
     Common
     user32

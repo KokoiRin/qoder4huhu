@@ -1,8 +1,6 @@
 #include "../include/MouseSimulator.h"
 #include <windows.h>
 
-using namespace WindowsAPI;
-
 namespace MouseSimulator {
 
 // 内部辅助函数

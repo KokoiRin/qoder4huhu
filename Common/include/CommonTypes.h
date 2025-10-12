@@ -8,7 +8,6 @@
 
 // 通用类型定义
 namespace WindowsAPI {
-    
     // 错误代码定义
     enum class ErrorCode {
         SUCCESS = 0,
@@ -88,7 +87,6 @@ namespace WindowsAPI {
         MIDDLE_DOWN,
         MIDDLE_UP,
         WHEEL,
-        DOUBLE_CLICK
     };
 
     // 键盘修饰键
