@@ -3,6 +3,36 @@
 
 namespace WindowManager {
 
+// ============ 窗口枚举 ============
+
+Result<std::vector<HWND>> EnumerateWindows() {
+    std::vector<HWND> windows;
+    
+    BOOL result = ::EnumWindows([](HWND hwnd, LPARAM lParam) -> BOOL {
+        auto* windowsList = reinterpret_cast<std::vector<HWND>*>(lParam);
+        
+        // 只添加可见的顶级窗口
+        if (::IsWindowVisible(hwnd)) {
+            // 检查是否有标题
+            wchar_t title[256];
+            int titleLength = GetWindowTextW(hwnd, title, sizeof(title) / sizeof(wchar_t));
+            
+            // 过滤掉没有标题的窗口
+            if (titleLength > 0) {
+                windowsList->push_back(hwnd);
+            }
+        }
+        
+        return TRUE; // 继续枚举
+    }, reinterpret_cast<LPARAM>(&windows));
+    
+    if (!result) {
+        return Result<std::vector<HWND>>::Error(ErrorCode::OPERATION_FAILED, L"Failed to enumerate windows");
+    }
+    
+    return Result<std::vector<HWND>>::Success(windows);
+}
+
 // ============ 窗口查找 ============
 
 Result<HWND> FindWindowByTitle(const std::wstring& title) {
@@ -11,33 +41,6 @@ Result<HWND> FindWindowByTitle(const std::wstring& title) {
         return Result<HWND>::Error(ErrorCode::WINDOW_NOT_FOUND, L"Window not found: " + title);
     }
     return Result<HWND>::Success(hwnd);
-}
-
-Result<HWND> FindWindowByProcessId(DWORD processId) {
-    struct EnumData {
-        DWORD targetProcessId;
-        HWND resultHwnd;
-    };
-    
-    EnumData enumData = { processId, NULL };
-    
-    EnumWindows([](HWND hwnd, LPARAM lParam) -> BOOL {
-        EnumData* data = reinterpret_cast<EnumData*>(lParam);
-        DWORD windowProcessId;
-        GetWindowThreadProcessId(hwnd, &windowProcessId);
-        
-        if (windowProcessId == data->targetProcessId && ::IsWindowVisible(hwnd)) {
-            data->resultHwnd = hwnd;
-            return FALSE; // 停止枚举
-        }
-        return TRUE; // 继续枚举
-    }, reinterpret_cast<LPARAM>(&enumData));
-    
-    if (enumData.resultHwnd == NULL) {
-        return Result<HWND>::Error(ErrorCode::WINDOW_NOT_FOUND, L"Window not found for process ID");
-    }
-    
-    return Result<HWND>::Success(enumData.resultHwnd);
 }
 
 Result<HWND> GetActiveWindow() {

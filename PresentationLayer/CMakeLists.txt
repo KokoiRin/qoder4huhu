@@ -6,10 +6,11 @@ set(PRESENTATIONLAYER_SOURCES src/base.cpp
 
 # 设置表现层头文件
 set(PRESENTATIONLAYER_HEADERS
+    include/WindowController.h
 )
 
 # 创建表现层静态库
-#add_library(PresentationLayer STATIC ${PRESENTATIONLAYER_SOURCES} ${PRESENTATIONLAYER_HEADERS})
+add_library(PresentationLayer STATIC ${PRESENTATIONLAYER_SOURCES} ${PRESENTATIONLAYER_HEADERS})
 
 # 设置头文件目录
 target_include_directories(PresentationLayer PUBLIC 

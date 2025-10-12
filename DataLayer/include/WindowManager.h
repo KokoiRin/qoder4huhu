@@ -16,6 +16,14 @@ using namespace WindowsAPI;
  */
 namespace WindowManager {
 
+// ============ 窗口枚举 ============
+
+/**
+ * @brief 枚举所有桌面窗口
+ * @return 窗口句柄列表
+ */
+Result<std::vector<HWND>> EnumerateWindows();
+
 // ============ 窗口查找 ============
 
 /**
@@ -24,13 +32,6 @@ namespace WindowManager {
  * @return 窗口句柄结果
  */
 Result<HWND> FindWindowByTitle(const std::wstring& title);
-
-/**
- * @brief 根据进程ID查找主窗口
- * @param processId 进程ID
- * @return 窗口句柄结果
- */
-Result<HWND> FindWindowByProcessId(DWORD processId);
 
 /**
  * @brief 获取当前活动窗口

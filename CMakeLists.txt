@@ -32,16 +32,16 @@ FetchContent_MakeAvailable(googletest)
 include_directories(
     ${CMAKE_SOURCE_DIR}/Common/include
     ${CMAKE_SOURCE_DIR}/DataLayer/include
-#    ${CMAKE_SOURCE_DIR}/ServiceLayer/include
-#    ${CMAKE_SOURCE_DIR}/PresentationLayer/include
-#    ${CMAKE_SOURCE_DIR}/UILayer/include
+    ${CMAKE_SOURCE_DIR}/ServiceLayer/include
+    ${CMAKE_SOURCE_DIR}/PresentationLayer/include
+    ${CMAKE_SOURCE_DIR}/UILayer/include
 )
 
 # 添加子目录
 add_subdirectory(Common)
 add_subdirectory(DataLayer)
-# add_subdirectory(ServiceLayer)
-# add_subdirectory(PresentationLayer)
+add_subdirectory(ServiceLayer)
+add_subdirectory(PresentationLayer)
 add_subdirectory(UILayer)
 
 # 添加测试目录
