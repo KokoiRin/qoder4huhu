@@ -1,11 +1,15 @@
 # ServiceLayer CMakeLists.txt
 
 # 设置服务层源文件
-set(SERVICELAYER_SOURCES src/case.cpp
+set(SERVICELAYER_SOURCES 
+    src/BoundWindow.cpp
+    src/WindowBindingService.cpp
 )
 
 # 设置服务层头文件
 set(SERVICELAYER_HEADERS
+    include/BoundWindow.h
+    include/WindowBindingService.h
 )
 
 # 创建服务层静态库

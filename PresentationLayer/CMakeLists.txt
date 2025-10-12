@@ -1,7 +1,8 @@
 # PresentationLayer CMakeLists.txt
 
 # 设置表现层源文件
-set(PRESENTATIONLAYER_SOURCES src/base.cpp
+set(PRESENTATIONLAYER_SOURCES 
+    src/WindowController.cpp
 )
 
 # 设置表现层头文件

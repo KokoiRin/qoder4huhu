@@ -34,7 +34,7 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/DataLayer/include
     ${CMAKE_SOURCE_DIR}/ServiceLayer/include
     ${CMAKE_SOURCE_DIR}/PresentationLayer/include
-    ${CMAKE_SOURCE_DIR}/UILayer/include
+#    ${CMAKE_SOURCE_DIR}/UILayer/include
 )
 
 # 添加子目录

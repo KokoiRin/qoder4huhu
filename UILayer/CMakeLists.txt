@@ -27,12 +27,16 @@ target_include_directories(WindowsAPIApp PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${CMAKE_SOURCE_DIR}/Common/include
     ${CMAKE_SOURCE_DIR}/DataLayer/include
+    ${CMAKE_SOURCE_DIR}/ServiceLayer/include
+    ${CMAKE_SOURCE_DIR}/PresentationLayer/include
 )
 
 # 链接Qt6库
 target_link_libraries(WindowsAPIApp
     Qt6::Core
     Qt6::Widgets
+    PresentationLayer
+    ServiceLayer
     DataLayer
     Common
     user32
