@@ -4,6 +4,9 @@ project(WindowsAPIProject)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# 生成编译数据库用于 clang-tidy
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 # MinGW特定设置
 if(MINGW)
     message(STATUS "Configuring for MinGW")

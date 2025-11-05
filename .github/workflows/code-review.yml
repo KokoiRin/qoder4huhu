@@ -1,0 +1,80 @@
+name: Code Review and Quality Check
+
+on:
+  pull_request:
+    branches: [ master, main, develop ]
+  push:
+    branches: [ master, main, develop ]
+
+jobs:
+  code-quality:
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      
+    - name: Setup MinGW
+      uses: egor-tensin/setup-mingw@v2
+      with:
+        platform: x64
+        
+    - name: Setup CMake
+      uses: lukka/get-cmake@latest
+      
+    - name: Install LLVM (clang-format & clang-tidy)
+      run: |
+        choco install llvm -y
+        refreshenv
+        
+    - name: Configure CMake
+      run: |
+        mkdir build
+        cd build
+        cmake .. -G "MinGW Makefiles" -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+        
+    - name: Build Project
+      run: |
+        cd build
+        cmake --build . --parallel
+        
+    - name: Run clang-format check
+      run: |
+        $files = Get-ChildItem -Path Common,DataLayer,ServiceLayer,PresentationLayer,UILayer,test -Include *.cpp,*.h -Recurse
+        $failed = $false
+        foreach ($file in $files) {
+          $original = Get-Content $file.FullName -Raw
+          clang-format -i --style=file $file.FullName
+          $formatted = Get-Content $file.FullName -Raw
+          if ($original -ne $formatted) {
+            Write-Host "Format check failed for: $($file.FullName)"
+            $failed = $true
+          }
+        }
+        if ($failed) {
+          Write-Error "Code formatting issues found. Please run format.bat locally."
+          exit 1
+        }
+      shell: pwsh
+        
+    - name: Run clang-tidy
+      run: |
+        $files = Get-ChildItem -Path Common,DataLayer,ServiceLayer,PresentationLayer,UILayer -Include *.cpp -Recurse
+        foreach ($file in $files) {
+          clang-tidy $file.FullName -p build -- -std=c++17
+        }
+      shell: pwsh
+      continue-on-error: true
+        
+    - name: Run Tests
+      run: |
+        cd build/bin
+        ./SmokeTest.exe --gtest_output=xml:../../test_results.xml
+      continue-on-error: true
+        
+    - name: Upload Test Results
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-results
+        path: test_results.xml

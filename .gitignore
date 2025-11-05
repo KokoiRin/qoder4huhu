@@ -1,88 +1,86 @@
-# 编译输出目录
+# Build directories
 build/
-cmake-build-*/
 bin/
 lib/
-obj/
 
-# IDE文件
-.vs/
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+*.cmake
+!CMakeLists.txt
+
+# Compiled files
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+*.dylib
+*.a
+*.lib
+
+# IDE
 .vscode/
 .idea/
-*.vcxproj.user
-*.sln.docstates
-
-# 临时文件
-*.tmp
-*.temp
-*.log
-*.bak
 *.swp
 *.swo
 *~
 
-# 系统文件
-.DS_Store
+# Test results
+test_results/
+*.xml
+gtest/
+
+# Clang tooling
+.clangd/
+.cache/
+compile_commands.json
+
+# Windows
 Thumbs.db
 Desktop.ini
 
-# 编译生成的文件
-*.exe
-*.dll
-*.lib
-*.a
-*.so
-*.dylib
-*.o
-*.obj
-*.pdb
-*.ilk
-*.exp
+# Temporary files
+*.tmp
+*.bak
+*.log
 
-# CMake缓存
-CMakeCache.txt
-CMakeFiles/
-cmake_install.cmake
-CTestTestfile.cmake
-Testing/
+# System files
+.DS_Store
 
-# 测试结果文件
-test_results/
-
-# 包管理器
+# Package manager
 vcpkg_installed/
 _deps/
 
-# 配置文件（保留模板）
+# Configuration files (keep templates)
 *.local
 *.user
 
-# 日志文件
-*.log
-
-# 文档生成
+# Documentation
 docs/_build/
 docs/html/
 docs/latex/
 
-# 第三方依赖
+# Third-party dependencies
 third_party/
 dependencies/
 extern/
 
-# 数据文件
+# Data files
 *.db
 *.sqlite
 *.dat
 
-# 备份文件
+# Backup files
 *.backup
 *.old
 
-# 调试信息
+# Debug information
 *.dSYM/
 
-# 其他
+# Other
 .qoder/
 .git/
 .gitignore.bak
