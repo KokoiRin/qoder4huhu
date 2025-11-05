@@ -1,6 +1,8 @@
 # GitHub Branch Protection Configuration Guide
 # GitHub 分支保护规则配置指南
 
+试试中不中
+
 ## 配置步骤
 
 ### 1. 访问仓库设置
